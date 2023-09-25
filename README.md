@@ -1,2 +1,4 @@
 # MiniApps
-You can find some basic projects developed with Python using the Flet framework, which is based on Flutter, here.
+<p>In the following repository, you will find mini-applications developed using Python, alongside the FLET library, which is based on FLUTTER.</p>
+1.arithmetic calculator
+
