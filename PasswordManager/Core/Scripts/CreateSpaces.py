@@ -14,8 +14,8 @@ def CreateSpaces(NameSpaces):
     print("Datos guardados correctamente en", ruta_archivo)
     
     
-NameSpaces = str(input("Ingrese el Nombre del espacio"))
-CreateSpaces(NameSpaces)
+# NameSpaces = str(input("Ingrese el Nombre del espacio"))
+# CreateSpaces(NameSpaces)
 
 
 
