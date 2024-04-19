@@ -1,10 +1,10 @@
 import flet as ft
 
-
-
 def CardComponent(page,Route,NameButton, NameTittle, NameSubtitle):
+
+        
     Card = ft.Card(  )
-    Card.content = ft.Container( ft.Column(
+    Card.content = ft.Container(ft.Column(
                         [
                             ft.ListTile(
                                 leading=ft.Icon(ft.icons.SPACE_DASHBOARD_ROUNDED),
@@ -20,6 +20,6 @@ def CardComponent(page,Route,NameButton, NameTittle, NameSubtitle):
                         ]
                     ),
                 width=400,
-                padding=10,                   
+                padding=10,              
                 )
     return Card

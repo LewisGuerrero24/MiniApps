@@ -1,25 +1,28 @@
 import flet as ft
-import re
-import repath
-import pyperclip as clipboard
 from Components.Cards import CardComponent
+from Core.Scripts.ListSpaces import ListSpaces
 from Core.Events.EventsForm import EventsForm
 from Core.Events.EventsOnclick import EventsOnclick
-from Core.Scripts.CreateSpaces import CreateSpaces
-from Core.Data import Data
 
 def main(page):
+     page.window_width = 430.0
+     page.window_height = 420.0
+     
+     def on_column_scroll(e: ft.OnScrollEvent):
+        print(
+            f"Type: {e.event_type}, pixels: {e.pixels}, min_scroll_extent: {e.min_scroll_extent}, max_scroll_extent: {e.max_scroll_extent}"
+        )
     
-    k = ft.TextField(label="Name Space");  
-    Events = EventsForm(ft,page)
-    EventsButtonOnclick = EventsOnclick(k)
+     k = ft.TextField(label="Name Space");  
+     Events = EventsForm(ft,page)
+     EventsButtonOnclick = EventsOnclick(k)
     
     
-    page.title = "Routes Example"
     
+     page.title = "Routes Example"
     
 #   Rutas de las Vistas
-    def route_change(route):       
+     def route_change(route):       
         page.views.clear()
         page.views.append(
             ft.View(
@@ -30,14 +33,15 @@ def main(page):
                 ],
             )
         )
-    
+        troute = ft.TemplateRoute(page.route)     
         if page.route == "/Create/Space":
             page.views.append(
                 ft.View(
                     "/Space",
                     [
                         k,
-                        ft.ElevatedButton("Crear",on_click=EventsButtonOnclick.CreateSpa),
+                        ft.Row([ft.ElevatedButton("Crear",on_click=lambda _:EventsButtonOnclick.CreateSpa(_,page)),
+                        ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go("/"))]),
                     ],
                 )
             )
@@ -47,11 +51,12 @@ def main(page):
                 page.views.append(
                     ft.View(
                         "/List",
-                            Events.LisSpacesCard(),
+                        
+                            [Events.LisSpacesCard(on_column_scroll)],
                     )
                 )
         
-        troute = ft.TemplateRoute(page.route)   
+          
         if troute.match("/List/Password/:Name"): 
             if page.route == f"/List/Password/{troute.Name}":
                 print("El espacio es de= " + troute.Name) 
@@ -62,16 +67,51 @@ def main(page):
                     )
                 )
                 
+        if troute.match("/Create/Password/:Name"):               
+            if page.route == f"/Create/Password/{troute.Name}":
+                    NamePassword = ft.TextField(label="Name")
+                    Password = ft.TextField(label="Password", password=True, can_reveal_password=True)
+                    page.views.append(
+                        ft.View(
+                            f"/Create/Password/{troute.Name}",
+                                [ft.Container(
+                                    content=ft.Column(
+                            [
+                                ft.Row( [NamePassword],
+                                    alignment=ft.MainAxisAlignment.CENTER,   
+                                ),
+                                ft.Row(
+                                    [Password,],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                ),   
+                                ft.Row(
+                                    [ft.ElevatedButton(text="Crear", on_click = lambda _:EventsButtonOnclick.CreatePassword(_,page,troute.Name,NamePassword,Password)),
+                                     ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go(f"/List/Password/{troute.Name}"))],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                )   
+                            ]
+                        ),
+                        margin=10,
+                        padding=10,
+                        alignment=ft.alignment.center,
+                        bgcolor=ft.colors.BLACK12,
+                        width=400,
+                        height=300,
+                        border_radius=10,
+                    ),],
+                        )
+                    )
+                
         page.update()
 
-    def view_pop(view):
+     def view_pop(view):
         page.views.pop()
         top_view = page.views[-1]
         page.go(top_view.route)
 
-    page.on_route_change = route_change
-    page.on_view_pop = view_pop
-    page.go(page.route)
+     page.on_route_change = route_change
+     page.on_view_pop = view_pop
+     page.go(page.route)
 
 
 ft.app(target=main)

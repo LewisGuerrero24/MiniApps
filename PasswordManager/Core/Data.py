@@ -51,9 +51,4 @@ class Data():
                 if Save_Data(self.datos_recuperados, self.nameSpace):
                     return "Datos eLIMINADOS Satisfactoriamente"
         
-            
-lt = Data('lewis')
-lt.load_Data()
-# lt.deleteData('messenger')
-print(lt.newData("messenger","aramis2409"))
-lt.load_Data()
+        

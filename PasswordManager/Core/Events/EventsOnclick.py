@@ -1,13 +1,23 @@
 from Core.Scripts.CreateSpaces import CreateSpaces
 import pyperclip as clipboard
+from Core.Data import Data
 
 class EventsOnclick():
     def __init__(self, k):
         self.k = k
         
     #Create Spaces en Python
-    def CreateSpa(self,e):
+    def CreateSpa(self,e, page):
         print(CreateSpaces(self.k.value))
+        page.go("/List/Spaces")
+        
+    def CreatePassword(self,e,page,NameSpace,NamePassword, Password):
+        newData = Data(NameSpace)
+        newData.load_Data()
+        print(newData.newData(NamePassword.value, Password.value))
+        page.go(f"/List/Password/{NameSpace}")
+        
+        
     
     # Lista de Passwords de un Usuario
     def button_Copy_p(self,e, newData,dd):

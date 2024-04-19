@@ -1,1 +1,2 @@
+# Ignorar archivos generados automáticamente por Python
 __pycache__/
