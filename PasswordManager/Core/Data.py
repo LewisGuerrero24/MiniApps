@@ -11,18 +11,15 @@ class Data():
     def newData(self,NameItem, Password):  
         DataEncrypt =Encrypt(Password)
         NewData =  {"Item": NameItem.upper().strip(),"Password":DataEncrypt[0],"Key":DataEncrypt[1]}
-        
-        if ExistItemData(NameItem.upper(),self.datos_recuperados) != True:
-            if self.datos_recuperados is None:
-                self.datos_recuperados = [NewData]
-            else: 
+        if self.datos_recuperados is None:
+                self.datos_recuperados = list()
                 self.datos_recuperados.append(NewData)
-            if Save_Data(self.datos_recuperados, self.nameSpace):
-                return "Datos Creados Satisfactoriamente"
-            
-            return "Datos no se han Podido Cargar Correctamente"
+        else: 
+            if ExistItemData(NameItem.upper(),self.datos_recuperados) != True:
+                    self.datos_recuperados.append(NewData)
+        if Save_Data(self.datos_recuperados, self.nameSpace):
+            return "Datos Creados Satisfactoriamente" 
         return "Ese Nombre de Item Ya Existe"
-        
         
     def load_Data(self):
         nombre_archivo = f'./SpacesUser/{self.nameSpace}'

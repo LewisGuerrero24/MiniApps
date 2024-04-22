@@ -33,7 +33,7 @@ class EventsForm():
             
         dd = self.ft.Dropdown(value="Seleccione...",width = 200,options = ArrayPassword)
         b = self.ft.ElevatedButton(text="Copy", on_click=lambda _: button_Copy_p(_,newData,dd), icon = "content_copy")
-        e = self.ft.ElevatedButton(text="Delete", on_click=lambda _: button_delete_p(_,newData,dd, nameSpace),icon  = "delete")
+        e = self.ft.ElevatedButton(text="Delete", on_click=lambda _: button_delete_p(_,newData,dd),icon  = "delete")
         lk = self.ft.ElevatedButton(text="Create",on_click=lambda _: self.page.go(f"/Create/Password/{nameSpace}"),icon  = "create")
         ng =self.ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: self.page.go("/"))
         PasswordCard = ComponentContainer(nameSpace,dd,b,e,lk, ng)

@@ -86,7 +86,7 @@ def main(page):
                                 ),   
                                 ft.Row(
                                     [ft.ElevatedButton(text="Crear", on_click = lambda _:EventsButtonOnclick.CreatePassword(_,page,troute.Name,NamePassword,Password)),
-                                     ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go(f"/List/Password/{troute.Name}"))],
+                                     ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go("/"))],
                                     alignment=ft.MainAxisAlignment.CENTER,
                                 )   
                             ]
