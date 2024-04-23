@@ -1,8 +1,7 @@
 import flet as ft
 from Components.Cards import CardComponent
-from Core.Scripts.ListSpaces import ListSpaces
-from Core.Events.EventsForm import EventsForm
-from Core.Events.EventsOnclick import EventsOnclick
+from Core.EventsForm import EventsForm
+from Core.EventsOnclick import EventsOnclick
 
 def main(page):
      page.window_width = 430.0
@@ -13,13 +12,12 @@ def main(page):
             f"Type: {e.event_type}, pixels: {e.pixels}, min_scroll_extent: {e.min_scroll_extent}, max_scroll_extent: {e.max_scroll_extent}"
         )
     
-     k = ft.TextField(label="Name Space");  
+    
+     k = ft.TextField(label="Name Space");
+     
+     #Eventos de vistas y Clicks  
      Events = EventsForm(ft,page)
-     EventsButtonOnclick = EventsOnclick(k)
-    
-    
-    
-     page.title = "Routes Example"
+     EventsButtonOnclick = EventsOnclick(page)
     
 #   Rutas de las Vistas
      def route_change(route):       
@@ -40,7 +38,7 @@ def main(page):
                     "/Space",
                     [
                         k,
-                        ft.Row([ft.ElevatedButton("Crear",on_click=lambda _:EventsButtonOnclick.CreateSpa(_,page)),
+                        ft.Row([ft.ElevatedButton("Crear",on_click=lambda _:EventsButtonOnclick.CreateSpa(_,k)),
                         ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go("/"))]),
                     ],
                 )
@@ -48,6 +46,7 @@ def main(page):
             
 
         if page.route == "/List/Spaces":
+                
                 page.views.append(
                     ft.View(
                         "/List",
@@ -69,7 +68,7 @@ def main(page):
                 
         if troute.match("/Create/Password/:Name"):               
             if page.route == f"/Create/Password/{troute.Name}":
-                    NamePassword = ft.TextField(label="Name")
+                    NameItem = ft.TextField(label="Name")
                     Password = ft.TextField(label="Password", password=True, can_reveal_password=True)
                     page.views.append(
                         ft.View(
@@ -77,7 +76,7 @@ def main(page):
                                 [ft.Container(
                                     content=ft.Column(
                             [
-                                ft.Row( [NamePassword],
+                                ft.Row( [NameItem],
                                     alignment=ft.MainAxisAlignment.CENTER,   
                                 ),
                                 ft.Row(
@@ -85,7 +84,7 @@ def main(page):
                                     alignment=ft.MainAxisAlignment.CENTER,
                                 ),   
                                 ft.Row(
-                                    [ft.ElevatedButton(text="Crear", on_click = lambda _:EventsButtonOnclick.CreatePassword(_,page,troute.Name,NamePassword,Password)),
+                                    [ft.ElevatedButton(text="Crear", on_click = lambda _:EventsButtonOnclick.CreatePassword(_,troute.Name,NameItem,Password)),
                                      ft.ElevatedButton("volver",icon = "arrow_back_ios",on_click=lambda _: page.go("/"))],
                                     alignment=ft.MainAxisAlignment.CENTER,
                                 )   

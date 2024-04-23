@@ -1,13 +1,14 @@
 import pickle
-from Core.Scripts.EncryptData import Encrypt, DeEncrypt
-from Core.Scripts.SaveData import Save_Data
-from Core.Scripts.ExistData import ExistItemData
+from Core.EncryptData import Encrypt, DeEncrypt
+
 
 class Data():  
     def __init__(self, nameSpace):
         self.nameSpace = nameSpace
         self.datos_recuperados = None
-    
+        self.route = f"./SpacesUser/{self.nameSpace}"
+        
+    #Insertar Nuevos Datos
     def newData(self,NameItem, Password):  
         DataEncrypt =Encrypt(Password)
         NewData =  {"Item": NameItem.upper().strip(),"Password":DataEncrypt[0],"Key":DataEncrypt[1]}
@@ -15,17 +16,24 @@ class Data():
                 self.datos_recuperados = list()
                 self.datos_recuperados.append(NewData)
         else: 
-            if ExistItemData(NameItem.upper(),self.datos_recuperados) != True:
+            if self.ExistItemData(NameItem.upper()) != True:
                     self.datos_recuperados.append(NewData)
-        if Save_Data(self.datos_recuperados, self.nameSpace):
+        if self.Save_Data():
             return "Datos Creados Satisfactoriamente" 
         return "Ese Nombre de Item Ya Existe"
-        
+    
+    #Cargar Datos
     def load_Data(self):
-        nombre_archivo = f'./SpacesUser/{self.nameSpace}'
-        with open(nombre_archivo, "rb") as archivo_binario:
+        with open(self.route, "rb") as archivo_binario:
             datos_recuperados = pickle.load(archivo_binario)
         self.datos_recuperados = datos_recuperados
+
+    #Guardado de datos
+    def Save_Data(self):
+        with open(self.route, "wb") as archivo_binario:
+            pickle.dump(self.datos_recuperados, archivo_binario)
+        return True
+        
 
     #Listar Usuarios   
     def listDataByItem(self):
@@ -41,11 +49,16 @@ class Data():
                 return DeEncrypt(valor['Key'],valor['Password'])
         return "Data No encontrada"
     
+    #Eliminar Data
     def deleteData(self,nameItem):
         for objeto in self.datos_recuperados:
             if objeto["Item"] == nameItem.upper():
                 self.datos_recuperados.remove(objeto)
-                if Save_Data(self.datos_recuperados, self.nameSpace):
+                if self.Save_Data():
                     return "Datos eLIMINADOS Satisfactoriamente"
-        
-        
+                
+    #Verificar si un Item ya existe    
+    def ExistItemData(self,nameItem):
+        for data in self.datos_recuperados:
+            if data["Item"] == nameItem:
+                return True

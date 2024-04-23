@@ -1,22 +1,32 @@
 import flet as ft
-
-def ComponentContainer(nameSpace,dd,b,e,lk,ng):
+from Components.ButtonsListPassword import ButtonsListPassword
+from Core.Spaces import space
+def ComponentContainer(nameSpace,page,dropPassword,functionCopy,functionDelete):
+    newSpace = space(nameSpace)
     Container = ft.Container(
                     content=ft.Column(
-                        [
+                        [ft.Row( [ft.PopupMenuButton(
+                                    items=[
+                                        ft.PopupMenuItem(text="Delete Space",on_click=lambda _: newSpace.DeleteSpace(_,page)),
+                                    ]
+                                )],
+                                alignment=ft.MainAxisAlignment.START,   
+                            ),
                             ft.Row( [ft.Text(nameSpace)],
                                 alignment=ft.MainAxisAlignment.CENTER,   
                             ),
                             ft.Row(
-                                [dd,],
+                                [dropPassword,],
                                 alignment=ft.MainAxisAlignment.CENTER,
                             ),   
                             ft.Row(
-                                [b,e],
+                                [ButtonsListPassword("Copy",functionCopy,"content_copy"),
+                                 ButtonsListPassword("Create",lambda _: page.go(f"/Create/Password/{nameSpace}"),"create")],
                                 alignment=ft.MainAxisAlignment.CENTER,
                             ),
                             ft.Row(
-                                [lk,ng],
+                                [ButtonsListPassword("Delete",functionDelete,"delete"),
+                                 ButtonsListPassword("volver",lambda _: page.go("/"),"arrow_back_ios")],
                                 alignment=ft.MainAxisAlignment.CENTER,
                             ),    
                         ]
@@ -30,3 +40,6 @@ def ComponentContainer(nameSpace,dd,b,e,lk,ng):
                     border_radius=10,
                 )
     return Container
+
+
+    
